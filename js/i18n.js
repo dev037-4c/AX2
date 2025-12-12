@@ -469,23 +469,6 @@
             if (fileinfo) fileinfo.textContent = trans['index.fileinfo'];
         }
         
-        // guide.html
-        if (page === 'guide.html') {
-            const title = document.querySelector('.guide-title');
-            if (title) title.textContent = trans['guide.title'];
-            
-            const sectionTitles = document.querySelectorAll('.guide-section-title');
-            if (sectionTitles[0]) {
-                const span = sectionTitles[0].childNodes;
-                for (let node of span) {
-                    if (node.nodeType === 3) { // text node
-                        node.textContent = ' ' + trans['guide.subtitle.title'];
-                        break;
-                    }
-                }
-            }
-        }
-        
         // mypage.html
         if (page === 'mypage.html') {
             // 탭 버튼들

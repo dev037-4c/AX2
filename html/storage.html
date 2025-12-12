@@ -9,186 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- 모바일 메뉴 버튼 -->
-    <button class="mobile-menu-btn" id="mobileMenuBtn" style="display: none;">
-        <i class="fas fa-bars"></i>
-    </button>
-    
-    <!-- 사이드바 오버레이 -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    
-    <!-- 배경 효과 -->
-    <div class="background-effects">
-        <div class="gradient-cloud cloud-1"></div>
-        <div class="gradient-cloud cloud-2"></div>
-        <div class="gradient-cloud cloud-3"></div>
-        <canvas id="particles-canvas"></canvas>
-        <canvas id="confetti-canvas"></canvas>
-        <div class="reflection-light"></div>
-    </div>
-
-    <!-- 상단 네비게이션 -->
-    <nav class="glass-nav">
-        <div class="nav-content">
-            <div class="nav-left">
-                <div class="logo" onclick="location.href='../index.html'">
-                    <img src="../assets/image/AX2_logo.png" alt="AX2" class="logo-img">
-                </div>
-                <div class="service-tabs">
-                    <a href="../index.html" class="service-tab">
-                        <span data-i18n="nav-auto-translate">자막생성</span>
-                    </a>
-                    <a href="used.html" class="service-tab">
-                        <span data-i18n="nav-usage">사용방법</span>
-                    </a>
-                    <a href="pricing.html" class="service-tab">
-                        <span data-i18n="nav-pricing">요금제/결제</span>
-                    </a>
-                </div>
-            </div>
-            <div class="nav-right">
-                <a href="login.html" class="login-btn" data-i18n="nav-login">로그인</a>
-                <a href="signup.html" class="signup-btn" data-i18n="nav-signup">가입하기</a>
-                <div class="more-menu-btn" id="moreMenuBtn">
-                    <div class="dots">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
-                <div class="more-menu-dropdown" id="moreMenuDropdown">
-                    <div class="more-menu-dropdown-content">
-                        <ul class="menu-comp">
-                            <!-- 도움 서브메뉴 패널 -->
-                            <div class="submenu-panel submenu-panel--help" id="helpSubmenuPanel">
-                                    <ul class="help-menu-list">
-                                        <li class="navbar__item navbar__item--xs">
-                                            <a href="used.html" data-i18n-title="help-usage">
-                                                <div class="navbar__item__icon"><i class="fas fa-book"></i></div>
-                                                <div class="navbar__item__title" data-i18n="help-usage">사용방법</div>
-                                            </a>
-                                        </li>
-                                        <li class="navbar__item navbar__item--xs">
-                                            <a href="#" data-i18n-title="help-faq">
-                                                <div class="navbar__item__icon"><i class="fas fa-question-circle"></i></div>
-                                                <div class="navbar__item__title" data-i18n="help-faq">자주 묻는 질문</div>
-                                            </a>
-                                        </li>
-                                        <li class="navbar__item navbar__item--xs">
-                                            <a href="#" data-i18n-title="help-tools">
-                                                <div class="navbar__item__icon"><i class="fas fa-tools"></i></div>
-                                                <div class="navbar__item__title" data-i18n="help-tools">도구</div>
-                                            </a>
-                                        </li>
-                                        <li class="navbar__item navbar__item--xs">
-                                            <a href="#" data-i18n-title="help-legal">
-                                                <div class="navbar__item__icon"><i class="fas fa-gavel"></i></div>
-                                                <div class="navbar__item__title" data-i18n="help-legal">법률 & 개인 정보 보호</div>
-                                            </a>
-                                        </li>
-                                        <li class="navbar__item navbar__item--xs">
-                                            <a href="#" data-i18n-title="help-contact">
-                                                <div class="navbar__item__icon"><i class="fas fa-envelope"></i></div>
-                                                <div class="navbar__item__title" data-i18n="help-contact">문의</div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- 언어 서브메뉴 패널 - 솔루션 부분에 표시 -->
-                                <div class="submenu-panel submenu-panel--language" id="languageSubmenuPanel">
-                                    <ul class="language-menu-list">
-                                        <li class="navbar__item navbar__item--xs">
-                                            <div class="language-item" data-lang="ko">
-                                                <div class="navbar__item__icon"><i class="fas fa-globe"></i></div>
-                                                <div class="navbar__item__title">한국어</div>
-                                                <i class="fas fa-check language-check"></i>
-                                            </div>
-                                        </li>
-                                        <li class="navbar__item navbar__item--xs">
-                                            <div class="language-item" data-lang="ja">
-                                                <div class="navbar__item__icon"><i class="fas fa-globe"></i></div>
-                                                <div class="navbar__item__title">日本語</div>
-                                                <i class="fas fa-check language-check" style="display: none;"></i>
-                                            </div>
-                                        </li>
-                                        <li class="navbar__item navbar__item--xs">
-                                            <div class="language-item" data-lang="zh">
-                                                <div class="navbar__item__icon"><i class="fas fa-globe"></i></div>
-                                                <div class="navbar__item__title">中文 (简体)</div>
-                                                <i class="fas fa-check language-check" style="display: none;"></i>
-                                            </div>
-                                        </li>
-                                        <li class="navbar__item navbar__item--xs">
-                                        </li>
-                                        <li class="navbar__item navbar__item--xs">
-                                            <div class="language-item" data-lang="fr">
-                                                <div class="navbar__item__icon"><i class="fas fa-globe"></i></div>
-                                                <div class="navbar__item__title">Français</div>
-                                                <i class="fas fa-check language-check" style="display: none;"></i>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="menu-comp__general">
-                                    <ul>
-                                        <li class="navbar__item navbar__item--xs">
-                                            <a href="pricing.html" data-i18n-title="menu-pricing">
-                                                <div class="navbar__item__icon"><i class="fas fa-tag"></i></div>
-                                                <div class="navbar__item__title" data-i18n="menu-pricing">가격</div>
-                                            </a>
-                                        </li>
-                                        <li class="navbar__item navbar__item--xs">
-                                            <a href="#" data-i18n-title="menu-security">
-                                                <div class="navbar__item__icon"><i class="fas fa-shield-alt"></i></div>
-                                                <div class="navbar__item__title" data-i18n="menu-security">보안</div>
-                                            </a>
-                                        </li>
-                                        <li class="navbar__item navbar__item--xs">
-                                            <a href="#" data-i18n-title="menu-features">
-                                                <div class="navbar__item__icon"><i class="fas fa-star"></i></div>
-                                                <div class="navbar__item__title" data-i18n="menu-features">기능</div>
-                                            </a>
-                                        </li>
-                                        <li class="navbar__item navbar__item--xs">
-                                            <a href="#" data-i18n-title="menu-about">
-                                                <div class="navbar__item__icon"><i class="fas fa-heart"></i></div>
-                                                <div class="navbar__item__title" data-i18n="menu-about">회사 소개</div>
-                                            </a>
-                                        </li>
-                                        <li class="divider divider--break"></li>
-                                        <li class="nav-has-dropdown">
-                                            <div class="navbar__item navbar__item--xs help-setting-item" id="helpSettingBtn">
-                                                <div>
-                                                    <div class="navbar__item__icon"><i class="fas fa-chevron-left"></i></div>
-                                                    <div class="navbar__item__title" data-i18n="menu-help">도움</div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="nav-has-dropdown">
-                                            <div class="navbar__item navbar__item--xs language-setting-item" id="languageSettingBtn">
-                                                <div>
-                                                    <div class="navbar__item__icon"><i class="fas fa-chevron-left"></i></div>
-                                                    <div class="navbar__item__title" data-i18n="menu-language">언어</div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <!-- 네비게이션 바 플레이스홀더 -->
+    <div id="nav-placeholder"></div>
 
     <div class="container">
         <!-- 저장공간 대시보드 -->
@@ -297,13 +119,11 @@
     </div>
 
 
-    <script src="../js/navbar.js" defer></script>
+    <script src="../js/i18n.js" defer></script>
+    <script src="../js/nav-bar.js" defer></script>
     <script src="../js/auth-state.js" defer></script>
-    <script src="../js/glass-nav.js" defer></script>
     <script src="../js/mypage.js" defer></script>
-    <script src="../js/script.js" defer></script>
-    <script src="../js/more-menu.js" defer></script>
-    <script src="../js/language-selector.js" defer></script>
+    <script src="../script.js" defer></script>
 </body>
 </html>
 

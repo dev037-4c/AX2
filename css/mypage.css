@@ -39,13 +39,13 @@
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: #4a9eff;
+            color: #8B5CF6;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .logo:hover {
-            color: #2196F3;
+            color: #8B5CF6;
             transform: scale(1.05);
         }
 
@@ -63,7 +63,7 @@
         }
 
         .nav-link.active {
-            color: #4a9eff;
+            color: #8B5CF6;
             background: #f0f7ff;
         }
 
@@ -75,7 +75,7 @@
 
         .login-btn {
             padding: 8px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
             color: #ffffff;
             border: none;
             border-radius: 6px;
@@ -120,7 +120,7 @@
         }
 
         .dashboard-title i {
-            color: #667eea;
+            color: #8B5CF6;
         }
 
         .free-plan-badge {
@@ -128,7 +128,7 @@
             align-items: center;
             gap: 8px;
             padding: 8px 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
             color: #ffffff;
             border-radius: 20px;
             font-size: 14px;
@@ -213,7 +213,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
             color: #ffffff;
             border-radius: 8px;
             font-size: 20px;
@@ -278,9 +278,9 @@
         }
 
         .filter-btn.active {
-            background: #4a9eff;
+            background: #8B5CF6;
             color: #ffffff;
-            border-color: #4a9eff;
+            border-color: #8B5CF6;
         }
 
         .video-grid {
@@ -301,7 +301,7 @@
         .video-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-color: #4a9eff;
+            border-color: #8B5CF6;
         }
 
         .video-card:hover::after {
@@ -457,9 +457,9 @@
         }
 
         .action-btn.primary {
-            background: #4a9eff;
+            background: #8B5CF6;
             color: #ffffff;
-            border-color: #4a9eff;
+            border-color: #8B5CF6;
         }
 
         .action-btn.primary:hover {
@@ -571,7 +571,7 @@
         }
 
         .form-input:focus {
-            border-color: #4a9eff;
+            border-color: #8B5CF6;
         }
 
         textarea.form-input {
@@ -591,7 +591,7 @@
         }
 
         .form-select:focus {
-            border-color: #4a9eff;
+            border-color: #8B5CF6;
         }
 
         .link-container {
@@ -611,7 +611,7 @@
 
         .copy-btn {
             padding: 10px 20px;
-            background: #4a9eff;
+            background: #8B5CF6;
             color: #ffffff;
             border: none;
             border-radius: 6px;
@@ -647,7 +647,7 @@
         }
 
         .btn-primary {
-            background: #4a9eff;
+            background: #8B5CF6;
             color: #ffffff;
         }
 
@@ -879,7 +879,7 @@
         }
 
         .subtitle-preview-header i {
-            color: #667eea;
+            color: #8B5CF6;
         }
 
         .subtitle-preview-content {
@@ -892,7 +892,7 @@
             margin-bottom: 8px;
             background: #ffffff;
             border-radius: 6px;
-            border-left: 3px solid #667eea;
+            border-left: 3px solid #8B5CF6;
             font-size: 13px;
             line-height: 1.5;
         }
@@ -975,7 +975,7 @@
         }
 
         .share-modal-header h3 i {
-            color: #667eea;
+            color: #8B5CF6;
         }
 
         .share-modal-close {
@@ -1053,7 +1053,7 @@
 
         .share-copy-btn {
             padding: 12px 20px;
-            background: #667eea;
+            background: #8B5CF6;
             color: #ffffff;
             border: none;
             border-radius: 8px;
@@ -1095,9 +1095,9 @@
         }
 
         .share-option-btn:hover {
-            background: #667eea;
+            background: #8B5CF6;
             color: #ffffff;
-            border-color: #667eea;
+            border-color: #8B5CF6;
             transform: translateY(-2px);
         }
 

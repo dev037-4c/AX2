@@ -61,13 +61,13 @@
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: #4a9eff;
+            color: #8B5CF6;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .logo:hover {
-            color: #2196F3;
+            color: #8B5CF6;
             transform: scale(1.05);
         }
 
@@ -102,13 +102,13 @@
         }
 
         .plan-info .highlight {
-            color: #667eea;
+            color: #8B5CF6;
             font-weight: 600;
         }
 
         .login-btn {
             padding: 8px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
             color: #ffffff;
             border: none;
             border-radius: 6px;
@@ -192,7 +192,7 @@
 
         .edit-title-btn:hover {
             background: #f0f0f0;
-            color: #667eea;
+            color: #8B5CF6;
         }
 
         .edit-title-btn i {
@@ -234,7 +234,7 @@
 
         .title-input:focus {
             background: #ffffff;
-            border-color: #667eea;
+            border-color: #8B5CF6;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
@@ -266,7 +266,7 @@
         }
 
         .edit-icon-btn:hover .edit-icon {
-            color: #667eea;
+            color: #8B5CF6;
         }
 
         .language-tabs {
@@ -325,7 +325,7 @@
         }
 
         .transcription-item:hover {
-            border-color: #667eea;
+            border-color: #8B5CF6;
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
         }
 
@@ -339,7 +339,7 @@
         .speaker-icon {
             width: 32px;
             height: 32px;
-            background: #667eea;
+            background: #8B5CF6;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -394,7 +394,7 @@
         
         .edit-time-btn:hover {
             background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
+            color: #8B5CF6;
         }
         
         .delete-segment-btn:hover {
@@ -404,7 +404,7 @@
         
         .transcription-item.editing {
             background: #f0f7ff;
-            border-left: 3px solid #667eea;
+            border-left: 3px solid #8B5CF6;
         }
         
         .transcription-item.changed {
@@ -468,7 +468,7 @@
         }
 
         .text-input:focus {
-            border-color: #667eea;
+            border-color: #8B5CF6;
             box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
             background: #fafbff;
         }
@@ -480,7 +480,7 @@
         
         .transcription-item.editing {
             background: #f0f7ff;
-            border-left: 3px solid #667eea;
+            border-left: 3px solid #8B5CF6;
         }
         
         .transcription-item.changed {
@@ -535,7 +535,7 @@
         
         .edit-time-btn:hover {
             background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
+            color: #8B5CF6;
         }
         
         .delete-segment-btn:hover {
@@ -561,7 +561,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #667eea;
+            color: #8B5CF6;
             font-size: 20px;
             margin-top: 24px;
         }
@@ -596,7 +596,7 @@
         }
         
         .video-drop-zone.drag-over {
-            border-color: #667eea;
+            border-color: #8B5CF6;
             background: #2a2a3a;
             transform: scale(1.02);
         }
@@ -616,7 +616,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #667eea;
+            color: #8B5CF6;
             transition: all 0.3s ease;
             padding: 12px;
             filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.2));
@@ -642,7 +642,7 @@
         
         .drop-zone-btn {
             padding: 12px 32px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
             color: #ffffff;
             border: none;
             border-radius: 8px;
@@ -687,7 +687,7 @@
 
         .video-tab.active {
             color: #1a1a1a;
-            border-bottom-color: #667eea;
+            border-bottom-color: #8B5CF6;
         }
 
         .video-tab:hover {
@@ -696,7 +696,7 @@
         }
 
         .warning-banner {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
             color: #ffffff;
             padding: 8px 16px;
             font-size: 13px;
@@ -780,7 +780,7 @@
         .play-btn {
             width: 40px;
             height: 40px;
-            background: #667eea;
+            background: #8B5CF6;
             border: none;
             border-radius: 50%;
             color: #ffffff;
@@ -813,7 +813,7 @@
 
         .progress-fill {
             height: 100%;
-            background: #667eea;
+            background: #8B5CF6;
             border-radius: 3px;
             transition: width 0.1s;
         }
@@ -876,13 +876,13 @@
         }
 
         .apply-btn-inline {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
             color: #ffffff;
             border: none;
         }
 
         .apply-btn-inline:hover {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            background: linear-gradient(135deg, #7C3AED 0%, #8B5CF6 100%);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
@@ -1000,7 +1000,7 @@
         }
 
         .title-edit-modal .modal-title-input:focus {
-            border-color: #667eea;
+            border-color: #8B5CF6;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
@@ -1012,7 +1012,7 @@
 
         .title-edit-modal .save-btn {
             padding: 12px 32px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
             color: #ffffff;
             border: none;
             border-radius: 8px;
@@ -1417,7 +1417,7 @@
 
         .title-edit-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #8B5CF6;
         }
 
         .title-edit-char-count {
@@ -1457,7 +1457,7 @@
         }
 
         .title-edit-save-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
             color: #ffffff;
         }
 

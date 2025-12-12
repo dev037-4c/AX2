@@ -95,15 +95,15 @@
                                 <i class="fas fa-file-alt"></i>
                                 <span>가격</span>
                             </a>
-                            <a href="#" class="mega-menu-link">
+                            <a href="${htmlPath}security.html" class="mega-menu-link">
                                 <i class="fas fa-lock"></i>
                                 <span>보안</span>
                             </a>
-                            <a href="#" class="mega-menu-link">
+                            <a href="${htmlPath}features.html" class="mega-menu-link">
                                 <i class="fas fa-th-large"></i>
                                 <span>기능</span>
                             </a>
-                            <a href="${htmlPath}home.html" class="mega-menu-link">
+                            <a href="${htmlPath}home.html" class="mega-menu-link" target="_blank">
                                 <i class="fas fa-tags"></i>
                                 <span>회사 소개</span>
                             </a>
@@ -119,19 +119,19 @@
                         </div>
                         <!-- 도움 서브메뉴 -->
                         <div class="mega-submenu" id="helpSubmenu">
-                            <a href="#" class="mega-submenu-item">
+                            <a href="${htmlPath}faq.html" class="mega-submenu-item">
                                 <i class="fas fa-question-circle"></i>
                                 <span>자주 묻는 질문</span>
                             </a>
-                            <a href="#" class="mega-submenu-item">
+                            <a href="${htmlPath}features.html" class="mega-submenu-item">
                                 <i class="fas fa-tools"></i>
                                 <span>도구</span>
                             </a>
-                            <a href="#" class="mega-submenu-item">
+                            <a href="${htmlPath}security.html" class="mega-submenu-item">
                                 <i class="fas fa-user-shield"></i>
                                 <span>법률 & 개인 정보 보호</span>
                             </a>
-                            <a href="#" class="mega-submenu-item">
+                            <a href="${htmlPath}home.html" class="mega-submenu-item" target="_blank">
                                 <i class="fas fa-envelope"></i>
                                 <span>문의</span>
                             </a>

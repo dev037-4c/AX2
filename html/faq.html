@@ -49,13 +49,13 @@
         }
 
         .category-tab:hover {
-            border-color: #667eea;
-            color: #667eea;
+            border-color: #8B5CF6;
+            color: #8B5CF6;
         }
 
         .category-tab.active {
-            background: #667eea;
-            border-color: #667eea;
+            background: #8B5CF6;
+            border-color: #8B5CF6;
             color: white;
         }
 
@@ -93,8 +93,8 @@
             color: white;
         }
 
-        .faq-section-title i.purple { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .faq-section-title i.blue { background: linear-gradient(135deg, #3B82F6, #60A5FA); }
+        .faq-section-title i.purple { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+        .faq-section-title i.blue { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
         .faq-section-title i.green { background: linear-gradient(135deg, #14B8A6, #34D399); }
         .faq-section-title i.orange { background: linear-gradient(135deg, #F59E0B, #FBBF24); }
         .faq-section-title i.red { background: linear-gradient(135deg, #EF4444, #F87171); }
@@ -136,7 +136,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #667eea;
+            color: #8B5CF6;
             transition: transform 0.3s ease;
             flex-shrink: 0;
             margin-left: 16px;
@@ -199,7 +199,7 @@
 
         .search-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #8B5CF6;
         }
 
         .search-icon {
@@ -291,15 +291,6 @@
     </style>
 </head>
 <body>
-    <!-- 배경 효과 -->
-    <div class="background-effects">
-        <div class="gradient-cloud cloud-1"></div>
-        <div class="gradient-cloud cloud-2"></div>
-        <div class="gradient-cloud cloud-3"></div>
-        <canvas id="particles-canvas"></canvas>
-        <div class="reflection-light"></div>
-    </div>
-
     <!-- 네비게이션 바 플레이스홀더 -->
     <div id="nav-placeholder"></div>
 
@@ -586,10 +577,10 @@
         </div>
     </div>
 
-    <script src="../js/auth-state.js" defer></script>
-    <script src="../script.js" defer></script>
     <script src="../js/i18n.js" defer></script>
     <script src="../js/nav-bar.js" defer></script>
+    <script src="../js/auth-state.js" defer></script>
+    <script src="../script.js" defer></script>
     <script>
         // FAQ 아코디언 기능
         document.addEventListener('DOMContentLoaded', function() {
