@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>AX2 | AI 자동 번역 자막 생성</title>
+    <link rel="icon" type="image/png" href="assets/image/AX.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/modal-card.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 네비게이션 바 플레이스홀더 -->
+    <div id="nav-placeholder"></div>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="main-container">
+        <div class="content-wrapper">
+            <!-- 중앙: 드롭존 및 영상 미리보기 -->
+            <div class="left-panel">
+                <!-- 제목 및 부제목 -->
+                <div class="upload-section-header">
+                    <h1 class="upload-title" data-i18n="main-title">강의 영상을 업로드하세요</h1>
+                    <p class="upload-subtitle" data-i18n="main-subtitle">AI가 자동으로 자막을 생성하고 번역합니다.</p>
+                </div>
+                
+                <!-- 드롭존 (업로드 전) -->
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-content">
+                        <div class="upload-icon-wrapper">
+                            <img src="assets/image/cloud.png" alt="업로드" class="upload-icon">
+                        </div>
+                        <p class="drop-zone-text" data-i18n="upload-drag">여기로 파일을 드래그하거나 클릭하세요</p>
+                        <p class="drop-zone-file-info" data-i18n="upload-info">MP4, MOV, AVI (최대 2GB)</p>
+                    </div>
+                    <input type="file" id="fileInput" accept="video/*" style="display: none;">
+                </div>
+
+            </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 번역 설정 모달 -->
+    <div class="translation-modal" id="translationModal" style="display: none;">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+            <div class="modal-content-wrapper">
+                <div class="right-panel" id="rightPanel">
+                <div class="modal-top-line">
+                    <button class="modal-close-btn" id="closeTranslationModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="panel-header">
+                    <div class="credit-header-container">
+                        <div class="credit-info-section">
+                            <span class="credit-label">내 크레딧</span>
+                            <span class="my-credit-amount" id="myCreditAmount">
+                                <img src="assets/image/credit.png" alt="크레딧" class="credit-icon">
+                                <span class="credit-amount-value">-</span>
+                            </span>
+                            <button class="credit-charge-btn-header" id="chargeCreditBtn">
+                                충전하기
+                            </button>
+                        </div>
+                        <div style="position: relative;">
+                            <button class="credit-guide-toggle-btn" id="creditGuideToggleBtn" title="크레딧 사용 안내">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="credit-guide-toggle-text">크레딧 사용 안내</span>
+                            </button>
+                            <!-- 크레딧 사용 안내 팝업 -->
+                            <div class="credit-usage-guide-popup" id="creditUsageGuidePopup" style="display: none;">
+                                <div class="credit-guide-content-wrapper">
+                                    <div class="credit-guide-list">
+                                        <div class="credit-guide-row">
+                                            <span class="credit-guide-text">기본 자막 생성: 1분당 10 크레딧</span>
+                                        </div>
+                                        <div class="credit-guide-row">
+                                            <span class="credit-guide-text">번역 언어 추가: 1분당 5 크레딧 (언어당)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="credit-guide-example">
+                                    <div class="credit-guide-example-title">예시</div>
+                                    <div class="credit-guide-example-item">10분 영상 + 기본 자막: 100 크레딧</div>
+                                    <div class="credit-guide-example-item">10분 영상 + 기본 자막 + 영어 번역: 150 크레딧</div>
+                                </div>
+                                <div class="credit-guide-divider"></div>
+                                <div class="credit-guide-note">
+                                    영상 길이는 분 단위로 올림 처리됩니다
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 1열 레이아웃 -->
+                <div class="translation-modal-body">
+                    <!-- 영상 미리보기 -->
+                    <div class="video-preview-container" id="videoPreviewContainer" style="display: none;">
+                        <video class="video-preview" id="videoPreview" controls preload="metadata">
+                            <source src="" type="video/mp4">
+                        </video>
+                    </div>
+                    <!-- 언어 설정과 크레딧 정보 -->
+                    <div class="translation-modal-content">
+                        <div class="panel-content">
+                    <!-- Target Languages -->
+                    <div class="setting-group">
+                        <label class="setting-label">
+                            <i class="fas fa-globe"></i>
+                            언어 설정
+                        </label>
+                        <div class="language-chips" id="languageChips">
+                            <!-- Original Language (고정, 첫 번째) -->
+                            <div class="language-chip original-language-chip" id="originalLanguageChipItem" data-lang="ko">
+                                <span id="originalLangText">한국어</span>
+                            </div>
+                            <!-- 화살표 (번역 언어가 있을 때만 표시) -->
+                            <div class="language-arrow" id="languageArrow" style="display: none;">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <!-- 추가 언어들이 여기에 동적으로 추가됩니다 -->
+                            <button class="add-language-btn">
+                                <i class="fas fa-plus"></i>
+                                언어 추가
+                            </button>
+                        </div>
+                        <!-- Hidden select for form submission -->
+                        <select class="glass-select" id="originalLang" style="display: none;">
+                            <option value="ko" selected>한국어</option>
+                            <option value="en">영어</option>
+                            <option value="ja">일본어</option>
+                            <option value="zh">중국어(간체)</option>
+                            <option value="zh-TW">중국어(번체)</option>
+                            <option value="es">스페인어</option>
+                            <option value="fr">프랑스어</option>
+                            <option value="de">독일어</option>
+                            <option value="pt">포르투갈어</option>
+                            <option value="it">이탈리아어</option>
+                            <option value="ru">러시아어</option>
+                            <option value="vi">베트남어</option>
+                            <option value="th">태국어</option>
+                            <option value="id">인도네시아어</option>
+                            <option value="hi">힌디어</option>
+                            <option value="ar">아랍어</option>
+                            <option value="tr">터키어</option>
+                            <option value="pl">폴란드어</option>
+                            <option value="nl">네덜란드어</option>
+                            <option value="sv">스웨덴어</option>
+                            <option value="no">노르웨이어</option>
+                            <option value="da">덴마크어</option>
+                            <option value="fi">핀란드어</option>
+                            <option value="cs">체코어</option>
+                            <option value="hu">헝가리어</option>
+                            <option value="el">그리스어</option>
+                            <option value="he">히브리어</option>
+                            <option value="uk">우크라이나어</option>
+                            <option value="ms">말레이어</option>
+                            <option value="ro">로마니아어</option>
+                        </select>
+                    </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 자막 생성하기 버튼 -->
+                    <div class="translate-btn-container">
+                        <button class="translate-btn" id="translateBtn" style="display: none;">
+                            <span class="translate-btn-text">자막 생성하기</span>
+                        </button>
+                        <div class="translate-btn-progress" id="translateBtnProgress" style="display: none;">
+                            <div class="translate-btn-progress-bar">
+                                <div class="translate-btn-progress-fill" id="translateBtnProgressFill" style="width: 0%;"></div>
+                            </div>
+                            <span class="translate-btn-progress-text" id="translateBtnProgressText"></span>
+                        </div>
+                    </div>
+                </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- 크레딧 충전 모달 -->
+    <div class="credit-charge-modal" id="creditChargeModal" style="display: none;">
+        <div class="credit-charge-modal-backdrop" id="creditChargeModalBackdrop"></div>
+        <div class="credit-charge-modal-content">
+            <div class="credit-charge-modal-header">
+                <h3>크레딧 충전</h3>
+                <button class="credit-charge-modal-close" id="closeCreditChargeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="credit-charge-packages" id="creditChargePackages">
+                <!-- 패키지 카드들이 여기에 동적으로 추가됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 언어 선택 모달 -->
+    <div class="language-modal" id="languageModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-header-title">
+                    <h3>번역 언어 선택</h3>
+                    <p class="modal-header-subtitle">최대 10개까지 선택할 수 있습니다</p>
+                </div>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="language-grid">
+                    <div class="modal-language-item" data-lang="ko">
+                        <span>한국어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="en">
+                        <span>영어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="ja">
+                        <span>일본어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="zh">
+                        <span>중국어(간체)</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="zh-TW">
+                        <span>중국어(번체)</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="es">
+                        <span>스페인어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="fr">
+                        <span>프랑스어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="de">
+                        <span>독일어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="pt">
+                        <span>포르투갈어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="it">
+                        <span>이탈리아어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="ru">
+                        <span>러시아어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="vi">
+                        <span>베트남어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="th">
+                        <span>태국어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="id">
+                        <span>인도네시아어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="hi">
+                        <span>힌디어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="ar">
+                        <span>아랍어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="tr">
+                        <span>터키어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="pl">
+                        <span>폴란드어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="nl">
+                        <span>네덜란드어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="sv">
+                        <span>스웨덴어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="no">
+                        <span>노르웨이어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="da">
+                        <span>덴마크어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="fi">
+                        <span>핀란드어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="cs">
+                        <span>체코어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="hu">
+                        <span>헝가리어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="el">
+                        <span>그리스어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="he">
+                        <span>히브리어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="uk">
+                        <span>우크라이나어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="ms">
+                        <span>말레이어</span>
+                    </div>
+                    <div class="modal-language-item" data-lang="ro">
+                        <span>로마니아어</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 팝업 광고 -->
+    <div class="ad-popup-overlay" id="ad-popup-overlay">
+        <div class="ad-popup">
+            <button class="ad-popup-close" id="ad-popup-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="ad-popup-content">
+                <div class="ad-popup-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="ad-popup-title">AX2 CAPTION 제품 비교</h3>
+                <p class="ad-popup-subtitle">왜 AX2 CAPTION을 선택해야 할까요?</p>
+                <div class="ad-popup-comparison-wrapper">
+                    <div class="comparison-section competitor-section">
+                        <div class="section-header">
+                            <h4>타사 제품</h4>
+                        </div>
+                        <div class="comparison-grid-2x2">
+                            <div class="comparison-card competitor-card">
+                                <div class="card-graph">
+                                    <div class="circular-progress" data-percent="70">
+                                        <svg class="progress-ring" width="120" height="120">
+                                            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="54"></circle>
+                                            <circle class="progress-ring-circle" cx="60" cy="60" r="54"></circle>
+                                        </svg>
+                                        <div class="progress-text">70%</div>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span>정확도</span>
+                                </div>
+                            </div>
+                            <div class="comparison-card competitor-card">
+                                <div class="card-graph">
+                                    <div class="circular-progress" data-percent="40">
+                                        <svg class="progress-ring" width="120" height="120">
+                                            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="54"></circle>
+                                            <circle class="progress-ring-circle" cx="60" cy="60" r="54"></circle>
+                                        </svg>
+                                        <div class="progress-text">40</div>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span>30-50개 언어</span>
+                                </div>
+                            </div>
+                            <div class="comparison-card competitor-card">
+                                <div class="card-graph">
+                                    <div class="circular-progress" data-percent="8">
+                                        <svg class="progress-ring" width="120" height="120">
+                                            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="54"></circle>
+                                            <circle class="progress-ring-circle" cx="60" cy="60" r="54"></circle>
+                                        </svg>
+                                        <div class="progress-text">50분</div>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span>1시간 영상 처리<br>평균 50분 소요</span>
+                                </div>
+                            </div>
+                            <div class="comparison-card competitor-card">
+                                <div class="card-icon">
+                                    <i class="fas fa-download"></i>
+                                </div>
+                                <div class="card-content">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span>프로그램 설치 필요<br>복잡한 설정</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comparison-section ax2-section">
+                        <div class="section-header">
+                            <h4>AX2 CAPTION</h4>
+                        </div>
+                        <div class="comparison-grid-2x2">
+                            <div class="comparison-card ax2-card">
+                                <div class="card-graph">
+                                    <div class="circular-progress" data-percent="85">
+                                        <svg class="progress-ring" width="120" height="120">
+                                            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="54"></circle>
+                                            <circle class="progress-ring-circle" cx="60" cy="60" r="54"></circle>
+                                        </svg>
+                                        <div class="progress-text">85%+</div>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span><strong>정확도</strong></span>
+                                </div>
+                            </div>
+                            <div class="comparison-card ax2-card">
+                                <div class="card-graph">
+                                    <div class="circular-progress" data-percent="100">
+                                        <svg class="progress-ring" width="120" height="120">
+                                            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="54"></circle>
+                                            <circle class="progress-ring-circle" cx="60" cy="60" r="54"></circle>
+                                        </svg>
+                                        <div class="progress-text">100+</div>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span><strong>100개 이상 언어</strong></span>
+                                </div>
+                            </div>
+                            <div class="comparison-card ax2-card">
+                                <div class="card-graph">
+                                    <div class="circular-progress" data-percent="25">
+                                        <svg class="progress-ring" width="120" height="120">
+                                            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="54"></circle>
+                                            <circle class="progress-ring-circle" cx="60" cy="60" r="54"></circle>
+                                        </svg>
+                                        <div class="progress-text">15분</div>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span><strong>1시간 영상 15분</strong><br>처리 속도</span>
+                                </div>
+                            </div>
+                            <div class="comparison-card ax2-card">
+                                <div class="card-icon">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div class="card-content">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span><strong>설치 불필요</strong><br>웹에서 즉시 시작</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/security-utils.js"></script>
+    <script src="js/token-manager.js"></script>
+    <script src="js/auth-api.js"></script>
+    <script src="js/loading-safety.js"></script>
+    <script src="js/modal-utils.js"></script>
+    <script src="js/modal-replace.js"></script>
+    <script src="js/api-upload.js"></script>
+    <script src="js/job-api.js"></script>
+    <script src="js/i18n.js" defer></script>
+    <script src="js/nav-bar.js" defer></script>
+    <script src="js/auth-state.js?v=20231211" defer></script>
+    <script src="script.js"></script>
+    <script src="script.js?v=20231211" defer></script>
+    
+    <!-- 챗봇 -->
+    <link rel="stylesheet" href="chatbot/chatbot.css">
+    <script src="chatbot/data.js" defer></script>
+    <script src="chatbot/chatbot.js" defer></script>
+    <script>
+        // 팝업 광고 표시
+        document.addEventListener('DOMContentLoaded', function() {
+            const popupOverlay = document.getElementById('ad-popup-overlay');
+            const closeBtn = document.getElementById('ad-popup-close');
+            const closeBtnSecondary = document.getElementById('ad-popup-close-btn');
+            
+            // 오늘 날짜 가져오기 (YYYY-MM-DD 형식)
+            function getTodayDate() {
+                const today = new Date();
+                return today.toISOString().split('T')[0];
+            }
+            
+            // 팝업을 표시해도 되는지 확인
+            function shouldShowPopup() {
+                const lastShownDate = localStorage.getItem('adPopupLastShown');
+                const today = getTodayDate();
+                
+                // 오늘 날짜와 다르면 표시 가능
+                if (lastShownDate !== today) {
+                    return true;
+                }
+                
+                return false;
+            }
+            
+            // 원형 그래프 애니메이션
+            function animateProgressBars() {
+                const progressBars = document.querySelectorAll('.circular-progress');
+                const circumference = 2 * Math.PI * 54; // radius = 54
+                
+                progressBars.forEach(function(bar, index) {
+                    const percent = parseFloat(bar.getAttribute('data-percent'));
+                    const circle = bar.querySelector('.progress-ring-circle');
+                    const offset = circumference - (percent / 100) * circumference;
+                    
+                    setTimeout(function() {
+                        circle.style.strokeDashoffset = offset;
+                    }, index * 100);
+                });
+            }
+            
+            // 팝업 닫기 처리
+            function closePopup() {
+                popupOverlay.classList.remove('active');
+                // 오늘 날짜 저장 (하루에 한 번만 표시)
+                localStorage.setItem('adPopupLastShown', getTodayDate());
+            }
+            
+            // 팝업 표시 여부 확인 후 표시
+            if (shouldShowPopup()) {
+                setTimeout(function() {
+                    popupOverlay.classList.add('active');
+                    // 그래프 애니메이션 시작
+                    setTimeout(animateProgressBars, 300);
+                }, 500);
+            }
+            
+            // 닫기 버튼 이벤트
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closePopup);
+            }
+            
+            // 배경 클릭 시 닫기
+            popupOverlay.addEventListener('click', function(e) {
+                if (e.target === popupOverlay) {
+                    closePopup();
+                }
+            });
+        });
+    </script>
+
+    <!-- 결제 모달 -->
+    <div class="payment-modal-overlay" id="payment-modal-overlay">
+        <div class="payment-modal">
+            <button class="payment-modal-close" id="payment-modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="payment-modal-body">
+                <!-- 왼쪽: 결제 방법 선택 -->
+                <div class="payment-methods-container">
+                    <div class="payment-main-title">결제 방법을 선택해주세요</div>
+                    
+                    <!-- 간편결제 -->
+                    <div class="payment-section">
+                        <div class="payment-section-title" style="font-size: 16px; margin-bottom: 12px;">간편결제</div>
+                        <div class="payment-methods">
+                            <button class="payment-method-btn" data-method="kakaopay">
+                                <div style="width: 80px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="assets/image/kakaopay.png" alt="카카오페이" style="max-width: 80px; max-height: 50px; object-fit: contain;">
+                                </div>
+                                카카오페이
+                            </button>
+                            <button class="payment-method-btn" data-method="npay">
+                                <div style="width: 80px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="assets/image/npay.png" alt="네이버페이" style="max-width: 80px; max-height: 50px; object-fit: contain;">
+                                </div>
+                                네이버페이
+                            </button>
+                            <button class="payment-method-btn" data-method="toss">
+                                <div style="width: 80px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="assets/image/tosspay.png" alt="토스페이" style="max-width: 80px; max-height: 50px; object-fit: contain;">
+                                </div>
+                                토스페이
+                            </button>
+                            <button class="payment-method-btn payment-method-more" data-method="samsung" style="display: none;">
+                                <div style="width: 80px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="assets/image/samsungpay.png" alt="삼성페이" style="max-width: 80px; max-height: 50px; object-fit: contain;">
+                                </div>
+                                삼성페이
+                            </button>
+                            <button class="payment-method-btn payment-method-more" data-method="payco" style="display: none;">
+                                <div style="width: 80px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="assets/image/PAYCO.png" alt="페이코" style="max-width: 80px; max-height: 50px; object-fit: contain;">
+                                </div>
+                                페이코
+                            </button>
+                            <button class="payment-method-btn payment-method-more" data-method="ssg" style="display: none;">
+                                <div style="width: 80px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="assets/image/SSGPAY.png" alt="SSG페이" style="max-width: 80px; max-height: 50px; object-fit: contain;">
+                                </div>
+                                SSG페이
+                            </button>
+                        </div>
+                        <a href="#" class="payment-more-link" id="easy-payment-more">
+                            더 보기 <i class="fas fa-chevron-down"></i>
+                        </a>
+                    </div>
+
+                    <!-- 신용·체크카드 -->
+                    <div class="payment-section">
+                        <div class="payment-section-title" style="font-size: 16px; margin-bottom: 12px;">신용·체크카드</div>
+                        <div class="payment-methods cards">
+                            <button class="payment-method-btn" data-method="shinhan">
+                                <img src="assets/image/shinhancard.png" alt="신한카드" style="width: 120px; height: 65px; object-fit: contain;">
+                                신한카드
+                            </button>
+                            <button class="payment-method-btn" data-method="hyundai">
+                                <img src="assets/image/hyundaicard.png" alt="현대카드" style="width: 120px; height: 65px; object-fit: contain;">
+                                현대카드
+                            </button>
+                            <button class="payment-method-btn" data-method="samsung-card">
+                                <img src="assets/image/samsungcard.png" alt="삼성카드" style="width: 140px; height: 75px; object-fit: contain;">
+                                삼성카드
+                            </button>
+                            <button class="payment-method-btn" data-method="lotte">
+                                <img src="assets/image/LOTTECARD.png" alt="롯데카드" style="width: 120px; height: 65px; object-fit: contain;">
+                                롯데카드
+                            </button>
+                            <button class="payment-method-btn" data-method="toss-bank">
+                                <img src="assets/image/tossbank.png" alt="토스뱅크" style="width: 120px; height: 65px; object-fit: contain;">
+                                토스뱅크
+                            </button>
+                            <button class="payment-method-btn" data-method="kb">
+                                <img src="assets/image/KB.png" alt="KB국민카드" style="width: 90px; height: 50px; object-fit: contain;">
+                                KB국민카드
+                            </button>
+                            <button class="payment-method-btn" data-method="bc">
+                                <img src="assets/image/BC.png" alt="BC카드" style="width: 90px; height: 50px; object-fit: contain;">
+                                BC카드
+                            </button>
+                            <button class="payment-method-btn" data-method="woori">
+                                <img src="assets/image/WooriBank.png" alt="우리카드" style="width: 120px; height: 65px; object-fit: contain;">
+                                우리카드
+                            </button>
+                            <button class="payment-method-btn" data-method="nh">
+                                <img src="assets/image/NH.png" alt="NH농협카드" style="width: 90px; height: 50px; object-fit: contain;">
+                                NH농협카드
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="citi" style="display: none;">
+                                <img src="assets/image/citi.png" alt="씨티카드" style="width: 120px; height: 65px; object-fit: contain;">
+                                씨티카드
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="hana-card" style="display: none;">
+                                <img src="assets/image/hanacard.png" alt="하나카드" style="width: 120px; height: 65px; object-fit: contain;">
+                                하나카드
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="kakaobank" style="display: none;">
+                                <img src="assets/image/KakaoBank.jpg" alt="카카오뱅크" style="width: 90px; height: 50px; object-fit: contain;">
+                                카카오뱅크
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="kbank" style="display: none;">
+                                <img src="assets/image/kbank.png" alt="케이뱅크" style="width: 90px; height: 50px; object-fit: contain;">
+                                케이뱅크
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="ibk" style="display: none;">
+                                <img src="assets/image/IBK.png" alt="IBK기업은행" style="width: 120px; height: 65px; object-fit: contain;">
+                                IBK기업은행
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="kdb" style="display: none;">
+                                <img src="assets/image/KDB.png" alt="KDB산업은행" style="width: 120px; height: 65px; object-fit: contain;">
+                                KDB산업은행
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="suhyup" style="display: none;">
+                                <img src="assets/image/CreditUnion.png" alt="수협은행" style="width: 120px; height: 65px; object-fit: contain;">
+                                수협은행
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="daegu" style="display: none;">
+                                <img src="assets/image/DGB.png" alt="대구은행" style="width: 120px; height: 65px; object-fit: contain;">
+                                대구은행
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="busan" style="display: none;">
+                                <img src="assets/image/BNK.png" alt="부산은행" style="width: 120px; height: 65px; object-fit: contain;">
+                                부산은행
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="gwangju" style="display: none;">
+                                <img src="assets/image/KwangjuBank.png" alt="광주은행" style="width: 90px; height: 50px; object-fit: contain;">
+                                광주은행
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="jeju" style="display: none;">
+                                <img src="assets/image/JejuBank.png" alt="제주은행" style="width: 90px; height: 50px; object-fit: contain;">
+                                제주은행
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="saemaul" style="display: none;">
+                                <img src="assets/image/KoreaFederationofCommunityCreditCooperatives.png" alt="새마을금고" style="width: 120px; height: 65px; object-fit: contain;">
+                                새마을금고
+                            </button>
+                            <button class="payment-method-btn payment-card-more" data-method="shinhyeop" style="display: none;">
+                                <img src="assets/image/SH.png" alt="신협" style="width: 120px; height: 65px; object-fit: contain;">
+                                신협
+                            </button>
+                        </div>
+                        <a href="#" class="payment-more-link" id="card-payment-more">
+                            더 보기 <i class="fas fa-chevron-down"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 오른쪽: 주문 요약 -->
+                <div class="payment-summary-container">
+                    <div class="payment-summary-item">
+                        <div class="payment-summary-label">상품명</div>
+                        <div class="payment-summary-value" id="summary-package-name">-</div>
+                    </div>
+                    <div class="payment-summary-item">
+                        <div class="payment-summary-label">결제 금액</div>
+                        <div class="payment-summary-amount" id="summary-package-price">-</div>
+                    </div>
+                    <div style="margin-top: auto; padding-top: 32px;">
+                        <div class="terms-box" style="margin-bottom: 20px;">
+                            <strong>결제 약관 동의</strong>
+                            크레딧 구매 시 <a href="#">이용약관</a> 및 <a href="#">개인정보처리방침</a>에 동의한 것으로 간주됩니다.<br>
+                            구매한 크레딧은 환불이 불가능하며, 유효기간 내에 사용해주세요.
+                        </div>
+                        <div class="terms-agreement" style="margin-bottom: 20px;">
+                            <input type="checkbox" id="terms-agree">
+                            <label for="terms-agree" style="cursor: pointer;">위 약관에 동의합니다</label>
+                        </div>
+                        <button class="payment-submit-btn" id="payment-submit-btn" disabled>결제하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 결제 완료 모달 -->
+    <div class="payment-success-modal-overlay" id="payment-success-modal-overlay" style="display: none;">
+        <div class="payment-success-modal">
+            <div class="payment-success-content">
+                <div class="payment-success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>결제가 완료되었습니다</h2>
+                <div class="payment-success-info" id="payment-success-info">
+                    <div class="success-info-item">
+                        <span class="success-info-label">충전 크레딧:</span>
+                        <span class="success-info-value" id="success-credit">-</span>
+                    </div>
+                    <div class="success-info-item">
+                        <span class="success-info-label">결제 금액:</span>
+                        <span class="success-info-value" id="success-price">-</span>
+                    </div>
+                    <div class="success-info-item">
+                        <span class="success-info-label">보유 크레딧:</span>
+                        <span class="success-info-value" id="success-balance">-</span>
+                    </div>
+                </div>
+                <button class="payment-success-btn" id="payment-success-close-btn">확인</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

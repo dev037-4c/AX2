@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AX2 Caption API 테스트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .progress-container {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .status {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .result h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .subtitle-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .subtitle-time {
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle-text {
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .language-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .language-chip {
+            background: #667eea;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 AX2 Caption API 테스트</h1>
+        
+        <form id="jobForm">
+            <div class="form-group">
+                <label for="videoId">비디오 ID</label>
+                <input type="text" id="videoId" value="video_test_123" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="originalLanguage">원본 언어</label>
+                <select id="originalLanguage">
+                    <option value="auto">자동 감지</option>
+                    <option value="ko">한국어</option>
+                    <option value="en">영어</option>
+                    <option value="ja">일본어</option>
+                    <option value="zh">중국어</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>번역 언어 (여러 개 선택 가능)</label>
+                <div class="language-chips" id="targetLanguages">
+                    <span class="language-chip" data-lang="en">영어</span>
+                    <span class="language-chip" data-lang="ja">일본어</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="speakers">화자 수</label>
+                <input type="number" id="speakers" value="1" min="1" max="5">
+            </div>
+            
+            <div class="form-group">
+                <label for="duration">영상 길이 (초)</label>
+                <input type="number" id="duration" value="60" min="1" required>
+            </div>
+            
+            <button type="submit" id="submitBtn">작업 생성 및 시작</button>
+        </form>
+        
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <div class="status" id="statusText">대기 중...</div>
+        </div>
+        
+        <div class="error" id="errorMessage"></div>
+        
+        <div class="result" id="resultContainer">
+            <h3>✅ 작업 완료!</h3>
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000/api/v1';
+        let currentJobId = null;
+        let pollInterval = null;
+
+        // 폼 제출
+        document.getElementById('jobForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const videoId = document.getElementById('videoId').value;
+            const originalLanguage = document.getElementById('originalLanguage').value;
+            const speakers = parseInt(document.getElementById('speakers').value);
+            const duration = parseFloat(document.getElementById('duration').value);
+            
+            // 선택된 번역 언어
+            const targetLanguages = Array.from(document.querySelectorAll('.language-chip'))
+                .map(chip => chip.dataset.lang);
+            
+            if (targetLanguages.length === 0) {
+                showError('최소 하나의 번역 언어를 선택해주세요.');
+                return;
+            }
+            
+            // UI 업데이트
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'block';
+            updateProgress(0, '작업 생성 중...');
+            
+            try {
+                // 작업 생성
+                const response = await fetch(`${API_BASE_URL}/jobs`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        videoId,
+                        originalLanguage,
+                        targetLanguages,
+                        speakers,
+                        duration
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error?.message || '작업 생성 실패');
+                }
+                
+                currentJobId = data.data.jobId;
+                updateProgress(5, '작업이 큐에 추가되었습니다.');
+                
+                // 작업 상태 폴링 시작
+                startPolling();
+                
+            } catch (error) {
+                showError(error.message);
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('progressContainer').style.display = 'none';
+            }
+        });
+        
+        // 작업 상태 폴링
+        function startPolling() {
+            if (pollInterval) {
+                clearInterval(pollInterval);
+            }
+            
+            pollInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/jobs/${currentJobId}`);
+                    const data = await response.json();
+                    
+                    if (!data.success) {
+                        throw new Error(data.error?.message || '작업 조회 실패');
+                    }
+                    
+                    const job = data.data;
+                    updateProgress(job.progress, getStatusText(job.status, job.currentStep));
+                    
+                    if (job.status === 'completed') {
+                        clearInterval(pollInterval);
+                        showResult(job.result);
+                        document.getElementById('submitBtn').disabled = false;
+                    } else if (job.status === 'failed') {
+                        clearInterval(pollInterval);
+                        showError(job.error?.message || '작업 처리 실패');
+                        document.getElementById('submitBtn').disabled = false;
+                    }
+                    
+                } catch (error) {
+                    clearInterval(pollInterval);
+                    showError(error.message);
+                    document.getElementById('submitBtn').disabled = false;
+                }
+            }, 1000); // 1초마다 폴링
+        }
+        
+        // 진행률 업데이트
+        function updateProgress(percent, status) {
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressFill').textContent = Math.round(percent) + '%';
+            document.getElementById('statusText').textContent = status;
+        }
+        
+        // 상태 텍스트
+        function getStatusText(status, step) {
+            const statusMap = {
+                'queued': '큐에 대기 중...',
+                'processing': {
+                    'upload': '업로드 중...',
+                    'speechRecognition': '음성 인식 중...',
+                    'translation': '번역 중...',
+                    'saving': '저장 중...'
+                }[step] || '처리 중...',
+                'completed': '완료!'
+            };
+            return statusMap[status] || status;
+        }
+        
+        // 결과 표시
+        function showResult(result) {
+            let html = `<p><strong>감지된 언어:</strong> ${result.detectedLanguage}</p>`;
+            html += `<p><strong>원본 자막 수:</strong> ${result.originalSubtitles.length}개</p>`;
+            html += `<p><strong>번역 언어:</strong> ${Object.keys(result.translatedSubtitles).join(', ')}</p>`;
+            html += '<hr style="margin: 20px 0;">';
+            
+            // 원본 자막 샘플 (최대 5개)
+            html += '<h4>원본 자막 샘플:</h4>';
+            result.originalSubtitles.slice(0, 5).forEach(sub => {
+                html += `
+                    <div class="subtitle-item">
+                        <div class="subtitle-time">${sub.startTime}s - ${sub.endTime}s</div>
+                        <div class="subtitle-text">${sub.text}</div>
+                    </div>
+                `;
+            });
+            
+            // 번역 자막 샘플
+            for (const [lang, subtitles] of Object.entries(result.translatedSubtitles)) {
+                html += `<h4>${lang.toUpperCase()} 번역 자막 샘플:</h4>`;
+                subtitles.slice(0, 3).forEach(sub => {
+                    html += `
+                        <div class="subtitle-item">
+                            <div class="subtitle-time">${sub.startTime}s - ${sub.endTime}s</div>
+                            <div class="subtitle-text">${sub.text}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('resultContent').innerHTML = html;
+            document.getElementById('resultContainer').style.display = 'block';
+        }
+        
+        // 에러 표시
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorMessage').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+
+
+

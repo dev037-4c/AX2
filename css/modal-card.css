@@ -1,0 +1,298 @@
+/**
+ * 통합 모달 카드 스타일
+ * 모든 팝업을 깔끔한 카드 형태로 통일
+ */
+
+/* 오버레이 */
+.modal-card-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-card-overlay.modal-card-show {
+    opacity: 1;
+}
+
+.modal-card-overlay.modal-card-hide {
+    opacity: 0;
+}
+
+/* 모달 카드 */
+.modal-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 480px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-card-overlay.modal-card-show .modal-card {
+    transform: scale(1) translateY(0);
+}
+
+.modal-card-overlay.modal-card-hide .modal-card {
+    transform: scale(0.9) translateY(20px);
+}
+
+/* 헤더 */
+.modal-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px 16px 24px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-card-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.4;
+}
+
+.modal-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.modal-card-icon-info {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.modal-card-icon-success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.modal-card-icon-warning {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+}
+
+.modal-card-icon-error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.modal-card-close {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #6b7280;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.modal-card-close:hover {
+    background: #f3f4f6;
+    color: #1a1a1a;
+}
+
+.modal-card-close:active {
+    transform: scale(0.95);
+}
+
+/* 본문 */
+.modal-card-body {
+    padding: 20px 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-card-message {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4b5563;
+    white-space: pre-line;
+}
+
+/* 푸터 */
+.modal-card-footer {
+    display: flex;
+    gap: 12px;
+    padding: 16px 24px 24px 24px;
+    border-top: 1px solid #f0f0f0;
+    justify-content: flex-end;
+}
+
+/* 버튼 */
+.modal-card-button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 80px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-card-button-secondary {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.modal-card-button-secondary:hover {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-card-button-secondary:active {
+    transform: translateY(0);
+}
+
+.modal-card-button-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.modal-card-button-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.modal-card-button-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.modal-card-button-danger {
+    background: #ef4444;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.modal-card-button-danger:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+.modal-card-button-danger:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+.modal-card-button-success {
+    background: #22c55e;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.modal-card-button-success:hover {
+    background: #16a34a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+}
+
+.modal-card-button-success:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+/* 반응형 */
+@media (max-width: 640px) {
+    .modal-card-overlay {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .modal-card {
+        max-width: 100%;
+        border-radius: 16px 16px 0 0;
+        margin-top: auto;
+        max-height: 85vh;
+    }
+
+    .modal-card-header {
+        padding: 20px 20px 12px 20px;
+    }
+
+    .modal-card-title {
+        font-size: 18px;
+    }
+
+    .modal-card-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+    }
+
+    .modal-card-body {
+        padding: 16px 20px;
+        max-height: calc(85vh - 200px);
+        overflow-y: auto;
+    }
+
+    .modal-card-footer {
+        padding: 12px 20px 20px 20px;
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+
+    .modal-card-button {
+        width: 100%;
+    }
+}
+
+/* 애니메이션 */
+@keyframes modalCardSlideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 640px) {
+    .modal-card-overlay.modal-card-show .modal-card {
+        animation: modalCardSlideUp 0.3s ease;
+    }
+}
+
+
+

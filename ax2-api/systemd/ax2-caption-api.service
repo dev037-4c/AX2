@@ -1,0 +1,31 @@
+[Unit]
+Description=AX2 Caption API Server
+After=network.target mysql.service
+Requires=mysql.service
+
+[Service]
+Type=simple
+User=ax2
+Group=ax2
+WorkingDirectory=/data/lx2/ax2-caption-api
+Environment="NODE_ENV=production"
+Environment="LOG_LEVEL=INFO"
+Environment="PORT=3000"
+ExecStart=/usr/bin/node /data/lx2/ax2-caption-api/server.js
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# 리소스 제한
+LimitNOFILE=65536
+MemoryLimit=2G
+
+# 보안 설정
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+
+

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>AX2 | 기능</title>
+    <link rel="icon" type="image/png" href="../assets/image/AX.png">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .security-container {
+            max-width: 1200px;
+            margin: 100px auto 40px;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            font-size: 42px;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+
+        .page-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 60px;
+            text-align: center;
+            line-height: 1.6;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+        /* 보안 섹션 */
+        .security-section {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .security-section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .security-section-title i {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+        }
+
+        .security-section-title i.purple { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+        .security-section-title i.blue { background: linear-gradient(135deg, #6366F1, #4F46E5); }
+        .security-section-title i.green { background: linear-gradient(135deg, #14B8A6, #34D399); }
+        .security-section-title i.orange { background: linear-gradient(135deg, #F59E0B, #FBBF24); }
+        .security-section-title i.red { background: linear-gradient(135deg, #EF4444, #F87171); }
+
+        /* 보안 아이템 */
+        .security-item {
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 0;
+        }
+
+        .security-item:last-child {
+            border-bottom: none;
+        }
+
+        .security-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s ease;
+            border-radius: 8px;
+        }
+
+        .security-question:hover {
+            background: #f8f9fa;
+        }
+
+        .security-question-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a2e;
+            flex: 1;
+        }
+
+        .security-question-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8B5CF6;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-left: 16px;
+        }
+
+        .security-item.active .security-question-icon {
+            transform: rotate(180deg);
+        }
+
+        .security-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 20px;
+        }
+
+        .security-item.active .security-answer {
+            max-height: 1000px;
+            padding: 0 20px 20px;
+        }
+
+        .security-answer-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.8;
+            padding-top: 10px;
+        }
+
+        .security-answer-content ul {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+
+        .security-answer-content li {
+            margin-bottom: 8px;
+        }
+
+        .security-answer-content strong {
+            color: #1a1a2e;
+            font-weight: 600;
+        }
+
+        /* 하이라이트 박스 */
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 4px solid #8B5CF6;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box.warning {
+            border-left-color: #F59E0B;
+            background: #fffbf0;
+        }
+
+        .highlight-box.success {
+            border-left-color: #14B8A6;
+            background: #f0fdfa;
+        }
+
+        .highlight-box-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .highlight-box-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+
+        body {
+            background: #ffffff !important;
+        }
+
+        @media (max-width: 768px) {
+            .security-container {
+                margin: 80px auto 40px;
+                padding: 0 15px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .security-section {
+                padding: 20px;
+            }
+
+            .security-question {
+                padding: 16px;
+            }
+
+            .security-question-text {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 네비게이션 바 플레이스홀더 -->
+    <div id="nav-placeholder"></div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="security-container">
+        <h1 class="page-title">기능</h1>
+        <p class="page-subtitle">AX2 자막 생성 서비스의 주요 기능을 확인하세요.</p>
+
+        <!-- 보안 섹션들 -->
+        <div id="securityContent">
+            <!-- 기본 기능 -->
+            <div class="security-section">
+                <div class="security-section-title">
+                    <i class="fas fa-magic purple"></i>
+                    <span>기본 기능</span>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">실시간 음성 인식 기능은 무엇인가요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            고정밀 음성 인식 기술로 영상의 음성을 정확하게 텍스트로 변환합니다. AI 기반 음성 인식 엔진을 사용하여 다양한 발음과 억양을 정확하게 인식하며, 배경 소음이 있는 환경에서도 높은 정확도를 유지합니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">다국어 자동 번역은 어떻게 작동하나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            50개 이상의 언어로 자동 번역하며, 여러 언어를 동시에 생성할 수 있습니다. AI 번역 엔진이 문맥을 이해하여 자연스러운 번역을 제공하며, 전문 용어도 정확하게 처리합니다. 번역 언어를 추가할 때마다 추가 크레딧이 소모됩니다 (분당 +5 크레딧).
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">자막 자동 생성은 얼마나 정확한가요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            AI가 자동으로 자막을 생성하고 영상에 맞게 시간 동기화합니다. 평균 99% 이상의 정확도로 자막을 생성하며, 전문 용어와 문맥을 이해하여 자연스러운 자막을 제공합니다. 생성된 자막은 온라인 편집기에서 직접 수정할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">어떤 영상 파일 형식을 지원하나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            MP4, MOV, AVI, MKV 형식의 영상 파일을 지원하며, 최대 2GB까지 업로드 가능합니다. 다양한 형식의 영상 파일에서 자동으로 자막을 생성하며, 처리 후 7일 동안 보관됩니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 자막 생성 기능 -->
+            <div class="security-section">
+                <div class="security-section-title">
+                    <i class="fas fa-closed-captioning blue"></i>
+                    <span>자막 생성 기능</span>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">자동 음성 인식은 어떻게 작동하나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            고정밀 AI 음성 인식으로 정확한 자막을 생성합니다. 업로드한 영상의 음성을 분석하여 텍스트로 변환하며, 다양한 발음과 억양을 정확하게 인식합니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">시간 동기화는 자동으로 되나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            네, 영상의 시간에 맞춰 자막이 자동으로 동기화됩니다. AI가 음성의 타이밍을 분석하여 각 자막의 시작 및 종료 시간을 정확하게 설정합니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">생성된 자막을 편집할 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            네, 생성된 자막은 온라인 편집기에서 직접 수정하고 편집할 수 있습니다. 텍스트 내용, 시간, 스타일 등을 자유롭게 변경할 수 있으며, 실시간 미리보기 기능도 제공됩니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">어떤 자막 파일 형식으로 내보낼 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            SRT, VTT, ASS 등 다양한 자막 파일 형식으로 내보낼 수 있습니다. 각 형식은 다양한 플랫폼과 호환되며, 필요에 따라 선택하여 다운로드할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">자막 스타일을 커스터마이징할 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            네, 자막 폰트, 크기, 색상, 위치 등을 자유롭게 설정할 수 있습니다. 편집기에서 다양한 스타일 옵션을 제공하며, 미리보기를 통해 실시간으로 확인할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">여러 영상을 한 번에 처리할 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            현재는 한 번에 하나의 영상만 처리할 수 있습니다. 여러 영상을 처리하려면 각각 업로드하여 처리해야 합니다. 향후 배치 처리 기능을 추가할 예정입니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 번역 기능 -->
+            <div class="security-section">
+                <div class="security-section-title">
+                    <i class="fas fa-globe green"></i>
+                    <span>다국어 번역 기능</span>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">어떤 언어를 지원하나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            50개 이상의 언어를 지원합니다. 한국어, 영어, 일본어, 중국어(간체/번체), 스페인어, 프랑스어, 독일어, 이탈리아어, 러시아어, 아랍어, 힌디어, 태국어 등 다양한 언어로 번역할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">여러 언어를 동시에 번역할 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            네, 여러 언어를 한 번에 번역하여 생성할 수 있습니다. 예를 들어, 한국어 자막을 영어, 일본어, 중국어로 동시에 번역할 수 있으며, 각 언어별로 별도의 자막 파일이 생성됩니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">번역 품질은 어떤가요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            AI가 문맥을 이해하여 자연스러운 번역을 제공합니다. 교육, 비즈니스, 기술 등 분야별 전문 용어도 정확하게 번역하며, 문맥에 맞는 적절한 표현을 사용합니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">번역 언어를 추가하면 크레딧이 더 소모되나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            네, 번역 언어를 추가할 때마다 추가 크레딧이 소모됩니다. 기본 자막 생성은 분당 10 크레딧이며, 번역 언어 1개당 분당 +5 크레딧이 추가로 소모됩니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 파일 관리 기능 -->
+            <div class="security-section">
+                <div class="security-section-title">
+                    <i class="fas fa-folder-open orange"></i>
+                    <span>파일 관리 및 저장</span>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">생성된 자막은 자동으로 저장되나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            네, 생성된 자막과 번역 파일은 자동으로 저장됩니다. 저장소 페이지에서 모든 작업을 확인하고 관리할 수 있으며, 언제든지 다시 다운로드하거나 편집할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">작업 목록은 어디서 확인하나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            저장소 페이지에서 모든 작업을 한 곳에서 확인하고 관리할 수 있습니다. 제목, 날짜, 언어 등으로 작업을 검색할 수 있으며, 각 작업의 상태와 정보를 확인할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">자막 파일은 얼마나 보관되나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            기본적으로 처리 완료 후 7일 동안 보관됩니다. Storage Plus 플랜을 구매하시면 30일, Storage Pro 플랜을 구매하시면 90일까지 보관할 수 있습니다. 보관 기간 만료 3일 전부터 알림이 표시됩니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">자막 파일을 다른 사람과 공유할 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            현재는 직접 다운로드하여 공유하는 방식만 지원합니다. 향후 링크를 통해 자막 파일을 다른 사람과 공유하는 기능을 추가할 예정입니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 편집 기능 -->
+            <div class="security-section">
+                <div class="security-section-title">
+                    <i class="fas fa-edit red"></i>
+                    <span>자막 편집 기능</span>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">자막 텍스트를 직접 수정할 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            네, 생성된 자막 텍스트를 직접 수정하고 편집할 수 있습니다. 온라인 편집기에서 각 자막의 텍스트를 클릭하여 수정할 수 있으며, 실시간으로 변경사항을 확인할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">자막의 시간을 조정할 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            네, 자막의 시작 및 종료 시간을 미세 조정할 수 있습니다. 타임라인에서 드래그하여 시간을 조정하거나, 직접 시간 값을 입력하여 정확하게 설정할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">자막 스타일을 변경할 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            네, 폰트, 크기, 색상, 배경, 위치 등을 자유롭게 설정할 수 있습니다. 편집기에서 다양한 스타일 옵션을 제공하며, 미리보기를 통해 실시간으로 확인할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">편집한 자막을 미리볼 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            네, 편집한 자막을 영상과 함께 실시간 미리보기를 할 수 있습니다. 편집기에서 바로 영상과 자막을 함께 재생하여 확인할 수 있으며, 변경사항이 즉시 반영됩니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 고급 기능 -->
+            <div class="security-section">
+                <div class="security-section-title">
+                    <i class="fas fa-cogs purple"></i>
+                    <span>고급 기능</span>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">용어집 관리 기능이 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            현재는 지원하지 않지만, 향후 전문 용어를 미리 정의하여 일관된 번역을 유지하는 용어집 관리 기능을 추가할 예정입니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">여러 화자를 구분할 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            현재는 지원하지 않지만, 향후 여러 화자를 자동으로 구분하여 자막을 생성하는 기능을 추가할 예정입니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">작업 통계를 확인할 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            마이페이지에서 크레딧 사용량, 작업 내역, 이번 달 사용량 등을 확인할 수 있습니다. 향후 더 상세한 분석 대시보드를 제공할 예정입니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API 및 통합 -->
+            <div class="security-section">
+                <div class="security-section-title">
+                    <i class="fas fa-plug blue"></i>
+                    <span>API 및 통합</span>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">API를 제공하나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            현재는 웹 인터페이스를 통한 사용만 지원합니다. 향후 표준 REST API를 제공하여 다른 서비스와 통합할 수 있도록 할 예정입니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <div class="security-question">
+                        <span class="security-question-text">다른 플랫폼과 통합할 수 있나요?</span>
+                        <i class="fas fa-chevron-down security-question-icon"></i>
+                    </div>
+                    <div class="security-answer">
+                        <div class="security-answer-content">
+                            현재는 직접 통합 기능을 제공하지 않습니다. 향후 YouTube, Vimeo 등 주요 플랫폼과의 통합 기능을 추가할 예정입니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 검색 결과 없음 -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="empty-title">검색 결과가 없습니다</div>
+            <div class="empty-desc">다른 검색어로 시도해보세요.</div>
+        </div>
+    </div>
+
+    <script src="../js/i18n.js" defer></script>
+    <script src="../js/nav-bar.js" defer></script>
+    <script src="../js/auth-state.js" defer></script>
+    <script src="../script.js" defer></script>
+    <script>
+        // 보안 아코디언 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            const securityQuestions = document.querySelectorAll('.security-question');
+            
+            securityQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const securityItem = this.parentElement;
+                    const isActive = securityItem.classList.contains('active');
+                    
+                    // 모든 보안 아이템 닫기
+                    document.querySelectorAll('.security-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    // 클릭한 아이템만 열기/닫기
+                    if (!isActive) {
+                        securityItem.classList.add('active');
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

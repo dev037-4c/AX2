@@ -1,0 +1,75 @@
+# Apache VirtualHost 설정 예시
+# /etc/apache2/sites-available/lx2.kr.conf
+
+<VirtualHost *:443>
+    ServerName lx2.kr
+    ServerAlias www.lx2.kr
+    
+    # SSL 인증서 설정
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/lx2.kr.crt
+    SSLCertificateKeyFile /etc/ssl/private/lx2.kr.key
+    SSLCertificateChainFile /etc/ssl/certs/lx2.kr-chain.crt
+    
+    # DocumentRoot
+    DocumentRoot /data/lx2/ax2-caption
+    
+    # 디렉토리 설정
+    <Directory /data/lx2/ax2-caption>
+        Options -Indexes +FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+    
+    # 업로드 크기 제한 (2GB = 2147483648 bytes)
+    LimitRequestBody 2147483648
+    
+    # 타임아웃 설정 (10분 = 600초)
+    Timeout 600
+    
+    # /api 프록시 설정 (Node.js API 서버)
+    <Location /api>
+        ProxyPass http://127.0.0.1:3000/api
+        ProxyPassReverse http://127.0.0.1:3000/api
+        
+        # 프록시 타임아웃 (10분)
+        ProxyTimeout 600
+        
+        # 프록시 헤더 설정
+        ProxyPreserveHost On
+        RequestHeader set X-Forwarded-Proto "https"
+        RequestHeader set X-Forwarded-Port "443"
+    </Location>
+    
+    # 업로드 디렉토리 직접 접근 차단 (보안)
+    <Directory /data/lx2/ax2-caption-storage/uploads>
+        Require all denied
+    </Directory>
+    
+    # 결과 디렉토리 직접 접근 차단 (보안)
+    <Directory /data/lx2/ax2-caption-storage/results>
+        Require all denied
+    </Directory>
+    
+    # 보안 헤더
+    <IfModule mod_headers.c>
+        Header set X-Content-Type-Options "nosniff"
+        Header set X-Frame-Options "DENY"
+        Header set X-XSS-Protection "1; mode=block"
+        Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    </IfModule>
+    
+    # 로그 설정
+    ErrorLog ${APACHE_LOG_DIR}/lx2.kr-error.log
+    CustomLog ${APACHE_LOG_DIR}/lx2.kr-access.log combined
+</VirtualHost>
+
+# HTTP에서 HTTPS로 리디렉션
+<VirtualHost *:80>
+    ServerName lx2.kr
+    ServerAlias www.lx2.kr
+    
+    Redirect permanent / https://lx2.kr/
+</VirtualHost>
+
+
